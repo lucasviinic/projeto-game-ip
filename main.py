@@ -148,7 +148,10 @@ while True:
 
         if event.type == KEYDOWN:
             if event.key == K_SPACE:
-                kirby.jump()
+                if kirby.rect[1] != kirby.y:
+                    pass
+                else:
+                    kirby.jump()
 
     if pygame.key.get_pressed()[K_a]:
         kirby.move('left')
