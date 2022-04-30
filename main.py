@@ -9,8 +9,8 @@ class Player(pygame.sprite.Sprite):
 
         self.x = x
         self.y = y
-        self.vel_x = 3
-        self.vel_y = 10
+        self.vel_x = 5
+        self.vel_y = 5
         self.jumping = False
         self.scale = scale
         self.stage = stage
@@ -23,11 +23,23 @@ class Player(pygame.sprite.Sprite):
         walk03 = pygame.transform.scale(walk03, scale)
         walk04 = pygame.image.load('images/walk04.png')
         walk04 = pygame.transform.scale(walk04, scale)
+        jump01 = pygame.image.load('images/jump01.png')
+        jump01 = pygame.transform.scale(jump01, scale)
+        jump02 = pygame.image.load('images/jump02.png')
+        jump02 = pygame.transform.scale(jump02, scale)
+        jump03 = pygame.image.load('images/jump03.png')
+        jump03 = pygame.transform.scale(jump03, scale)
+        jump04 = pygame.image.load('images/jump04.png')
+        jump04 = pygame.transform.scale(jump04, scale)
 
         self.images.append(walk01)
         self.images.append(walk02)
         self.images.append(walk03)
         self.images.append(walk04)
+        self.images.append(jump01)
+        self.images.append(jump02)
+        self.images.append(jump03)
+        self.images.append(jump04)
 
         self.index = 0
 
@@ -61,8 +73,30 @@ class Player(pygame.sprite.Sprite):
             if self.rect[0] < 0:
                 self.rect[0] += self.vel_x
 
+    def jump(self):
+        self.jumping = True
+
     def collision(self):
         return self.rect
+
+    def update(self, side):
+        if self.jumping:
+            if side == 'left':
+                self.image = self.images[6]
+            else:
+                self.image = self.images[4]
+            if self.rect[1] <= 370:
+                self.jumping = False
+                if side == 'left':
+                    self.image = self.images[7]
+                else:
+                    self.image = self.images[5]
+            self.rect[1] -= 10
+        else:
+            if self.rect[1] < self.y:
+                self.rect[1] += self.vel_y
+            else:
+                self.rect[1] = self.y
 
 
 pygame.init()
@@ -83,6 +117,7 @@ clock = pygame.time.Clock()
 
 kirby = Player(50, 555, (50, 60), 0)
 kirby_group = pygame.sprite.Group()
+looking = 'right'
 kirby_group.add(kirby)
 points = 0
 life = 50
@@ -98,8 +133,8 @@ while True:
     clock.tick(200)
     screen.fill('BLACK')
     screen.blit(background, (0, 0))
-    kirby_group.update()
-    kb = kirby_group.draw(screen)
+    kirby.update(looking)
+    kirby_group.draw(screen)
     score = f'Points: {points}'
     life_points = f'Life: {life}/100'
     text1 = font.render(score, True, 'BLACK')
@@ -109,13 +144,19 @@ while True:
             pygame.quit()
             exit()
 
-    # player walking
+    # player movement
+
+        if event.type == KEYDOWN:
+            if event.key == K_SPACE:
+                kirby.jump()
 
     if pygame.key.get_pressed()[K_a]:
         kirby.move('left')
+        looking = 'left'
 
     if pygame.key.get_pressed()[K_d]:
         kirby.move('right')
+        looking = 'right'
 
     # objects
 
