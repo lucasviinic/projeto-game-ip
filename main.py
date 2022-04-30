@@ -4,9 +4,14 @@ from sys import exit
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, scale, stage):
+    def __init__(self, x, y, scale, stage):
         super(Player, self).__init__()
 
+        self.x = x
+        self.y = y
+        self.vel_x = 3
+        self.vel_y = 10
+        self.jumping = False
         self.scale = scale
         self.stage = stage
         self.images = []
@@ -32,7 +37,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.images[self.index]
 
-        self.rect = pygame.Rect(50, 555, scale[0], scale[1])
+        self.rect = pygame.Rect(x, y, scale[0], scale[1])
 
     def move(self, direction):
         if direction == 'right':
@@ -42,10 +47,9 @@ class Player(pygame.sprite.Sprite):
                 self.index = 0
 
             self.image = self.images[self.index]
-            self.rect[0] += 3
+            self.rect[0] += self.vel_x
             if self.rect[0] > 930:
                 self.rect[0] = 0
-
         if direction == 'left':
             self.index += 1
 
@@ -53,9 +57,9 @@ class Player(pygame.sprite.Sprite):
                 self.index = 2
 
             self.image = self.images[self.index]
-            self.rect[0] -= 3
+            self.rect[0] -= self.vel_x
             if self.rect[0] < 0:
-                self.rect[0] += 3
+                self.rect[0] += self.vel_x
 
     def collision(self):
         return self.rect
@@ -68,6 +72,7 @@ pygame.init()
 
 width = 960
 height = 720
+gravity = 1
 screen = pygame.display.set_mode((width, height))
 background = pygame.image.load('images/background.png')
 background = pygame.transform.scale(background, (width, height))
@@ -77,7 +82,7 @@ clock = pygame.time.Clock()
 
 # player info
 
-kirby = Player((50, 60), 0)
+kirby = Player(50, 555, (50, 60), 0)
 kirby_group = pygame.sprite.Group()
 kirby_group.add(kirby)
 points = 0
