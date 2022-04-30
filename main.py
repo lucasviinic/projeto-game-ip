@@ -72,7 +72,6 @@ pygame.init()
 
 width = 960
 height = 720
-gravity = 1
 screen = pygame.display.set_mode((width, height))
 background = pygame.image.load('images/background.png')
 background = pygame.transform.scale(background, (width, height))
