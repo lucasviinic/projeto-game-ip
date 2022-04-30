@@ -4,10 +4,11 @@ from sys import exit
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, scale):
+    def __init__(self, scale, stage):
         super(Player, self).__init__()
 
         self.scale = scale
+        self.stage = stage
         self.images = []
         walk01 = pygame.image.load('images/walk01.png')
         walk01 = pygame.transform.scale(walk01, scale)
@@ -31,7 +32,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.images[self.index]
 
-        self.rect = pygame.Rect(50, 565, scale[0], scale[1])
+        self.rect = pygame.Rect(50, 555, scale[0], scale[1])
 
     def move(self, direction):
         if direction == 'right':
@@ -43,7 +44,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.images[self.index]
             self.rect[0] += 3
             if self.rect[0] > 930:
-                self.rect[0] -= 3
+                self.rect[0] = 0
 
         if direction == 'left':
             self.index += 1
@@ -76,7 +77,7 @@ clock = pygame.time.Clock()
 
 # player info
 
-kirby = Player((50, 60))
+kirby = Player((50, 60), 0)
 kirby_group = pygame.sprite.Group()
 kirby_group.add(kirby)
 points = 0
@@ -97,7 +98,7 @@ while True:
     kb = kirby_group.draw(screen)
     score = f'Points: {points}'
     life_points = f'Life: {life}/100'
-    text1 = font.render(score, True, 'GOLD')
+    text1 = font.render(score, True, 'BLACK')
     text2 = font.render(life_points, True, 'RED')
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -124,10 +125,15 @@ while True:
         if kirby.collision().colliderect(potion):
             draw_potion = False
             life += 10
+            if life > 100:
+                life = 100
+
+    if kirby.collision()[0] > 925:
+        draw_coin = True
+        draw_potion = True
 
     # text
 
     screen.blit(text1, (750, 40))
-    screen.blit(text2, (500, 40))
+    screen.blit(text2, (475, 40))
     pygame.display.update()
-
