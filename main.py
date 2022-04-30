@@ -115,7 +115,6 @@ while True:
 
     if draw_coin:
         coin = pygame.draw.rect(screen, 'GOLD', (450, 590, 15, 15))
-        print(kirby.collision())
         if kirby.collision().colliderect(coin):
             draw_coin = False
             points += 1
@@ -130,4 +129,3 @@ while True:
     screen.blit(text1, (750, 40))
     screen.blit(text2, (500, 40))
     pygame.display.update()
-
