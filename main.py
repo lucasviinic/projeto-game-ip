@@ -4,18 +4,19 @@ from sys import exit
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, scale):
         super(Player, self).__init__()
 
+        self.scale = scale
         self.images = []
         walk01 = pygame.image.load('images/walk01.png')
-        walk01 = pygame.transform.scale(walk01, (50, 60))
+        walk01 = pygame.transform.scale(walk01, scale)
         walk02 = pygame.image.load('images/walk02.png')
-        walk02 = pygame.transform.scale(walk02, (50, 60))
+        walk02 = pygame.transform.scale(walk02, scale)
         walk03 = pygame.image.load('images/walk03.png')
-        walk03 = pygame.transform.scale(walk03, (50, 60))
+        walk03 = pygame.transform.scale(walk03, scale)
         walk04 = pygame.image.load('images/walk04.png')
-        walk04 = pygame.transform.scale(walk04, (50, 60))
+        walk04 = pygame.transform.scale(walk04, scale)
 
         self.images.append(walk01)
         self.images.append(walk02)
@@ -30,7 +31,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.images[self.index]
 
-        self.rect = pygame.Rect(50, 565, 50, 60)
+        self.rect = pygame.Rect(50, 565, scale[0], scale[1])
 
     def move(self, direction):
         if direction == 'right':
@@ -75,7 +76,7 @@ clock = pygame.time.Clock()
 
 # player info
 
-kirby = Player()
+kirby = Player((50, 60))
 kirby_group = pygame.sprite.Group()
 kirby_group.add(kirby)
 points = 0
@@ -129,3 +130,4 @@ while True:
     screen.blit(text1, (750, 40))
     screen.blit(text2, (500, 40))
     pygame.display.update()
+
