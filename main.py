@@ -58,8 +58,10 @@ class Player(pygame.sprite.Sprite):
             if self.index > 1:
                 self.index = 0
 
-            self.image = self.images[self.index]
+            if self.rect[1] == self.y:
+                self.image = self.images[self.index]
             self.rect[0] += self.vel_x
+
             if self.rect[0] > 930:
                 self.rect[0] = 0
         if direction == 'left':
@@ -68,7 +70,8 @@ class Player(pygame.sprite.Sprite):
             if self.index > 3:
                 self.index = 2
 
-            self.image = self.images[self.index]
+            if self.rect[1] == self.y:
+                self.image = self.images[self.index]
             self.rect[0] -= self.vel_x
             if self.rect[0] < 0:
                 self.rect[0] += self.vel_x
@@ -185,3 +188,4 @@ while True:
     screen.blit(text1, (750, 40))
     screen.blit(text2, (475, 40))
     pygame.display.update()
+
