@@ -12,7 +12,7 @@ pygame.init()
 
 # screen info
 
-gravidade = 0.3  # VALOR INICIAL DA GRAVIDADE
+gravidade = 0.25  # VALOR INICIAL DA GRAVIDADE
 width = 960
 height = 720
 acel_y = 0  # VALOR INICIAL DA ACERELAÇÃO NO EIXO Y(ALTURA)
@@ -101,7 +101,6 @@ points = 0
 
 while True:
     # CONFIGAÇÕES========================================================================================
-    print(kirby_y)
     clock.tick(120)  # FPS
     screen.fill('BLACK')
     screen.blit(background, (0, 0))
@@ -118,7 +117,6 @@ while True:
     if kirby_y > 526:  # DEFINE O CHÃO
         kirby_y = 526
         acel_y = 0
-        clock = pygame.time.Clock()
 
     if box_boxer_y < 534.0000000000001:  # DEFINE O CHÃO
         box_boxer_y += acel_y
@@ -136,14 +134,14 @@ while True:
 
         if event.type == KEYDOWN:
             if event.key == K_a:
-                kirby_x -= 2
+                kirby_x -= 3
                 if kirby_x < 0:
-                    kirby_x +=2
+                    kirby_x += 3
                 kirby.update_left()
                 parado = False
 
             if event.key == K_d:
-                kirby_x += 2
+                kirby_x += 3
                 if kirby_x > 930:
                     kirby_x = 0
                 kirby.update_right()
@@ -151,17 +149,18 @@ while True:
 
             if event.key == K_SPACE:
                 if kirby_y == 526:
-                    kirby_y -= 200
+                    kirby_y -= 225
+                    kirby.update_right()
                     acel_y = 0
 
     if pygame.key.get_pressed()[K_a]:
-        kirby_x -= 3
+        kirby_x -= 4
         if kirby_x < 0:
-            kirby_x += 3
+            kirby_x += 4
         kirby.update_left()
         parado = False
     if pygame.key.get_pressed()[K_d]:
-        kirby_x += 3
+        kirby_x += 4
         if kirby_x > 930:
             kirby_x = 0
             cerejas_group.add(cereja1)
