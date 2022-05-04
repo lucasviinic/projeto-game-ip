@@ -2,6 +2,7 @@ import pygame
 
 pygame.init()
 
+
 class Inimigo(pygame.sprite.Sprite):
     
     def __init__(self,tela,x,y,vida_inicial):

@@ -5,17 +5,19 @@ from sys import exit
 from kirby import Kirby
 from floor import Floor
 from inimigo01 import Inimigo
+from misc import Coin
+from misc import Cherry
 
 pygame.init()
 
 # screen info
 
-gravidade = 0.6 #VALOR INICIAL DA GRAVIDADE
-width = 960 
+gravidade = 0.3  # VALOR INICIAL DA GRAVIDADE
+width = 960
 height = 720
-acel_y_kirby = 0 #VALOR INICIAL DA ACERELAÇÃO NO EIXO Y(ALTURA)
+acel_y = 0  # VALOR INICIAL DA ACERELAÇÃO NO EIXO Y(ALTURA)
 
-#CONFIGURAÇÕES GERAIS============================================================================================
+# CONFIGURAÇÕES GERAIS============================================================================================
 
 screen = pygame.display.set_mode((width, height))
 background = pygame.image.load('images/background.png')
@@ -24,39 +26,43 @@ pygame.display.set_caption('Kirby')
 font = pygame.font.SysFont('Akziden Ghost', 50, True, False)
 clock = pygame.time.Clock()
 
-#KIRBY INFORMAÇÕES============================================================================================
+# KIRBY INFORMAÇÕES============================================================================================
 
 kirby_x = 80
-kirby_y = 0
+kirby_y = 540
 parado = True
 
-kirby = Kirby(screen,50,400,100)
+kirby = Kirby(screen, 50, 400, 100)
 
-#FIM=================================================================================================
+# FIM=================================================================================================
 
-#INSTÂNCIAS DO CHÃO=======================================================================================
-floor = Floor(screen,0,900)
-floor2 = Floor(screen,0,900)
-floor3 = Floor(screen,0,900)
-floor4 = Floor(screen,0,900)
-floor5 = Floor(screen,0,900)
-floor6 = Floor(screen,0,900)
-#FIM====================================================================================================================
+# INSTÂNCIAS DO CHÃO=======================================================================================
+floor = Floor(screen, 0, 900)
+floor2 = Floor(screen, 0, 900)
+floor3 = Floor(screen, 0, 900)
+floor4 = Floor(screen, 0, 900)
+floor5 = Floor(screen, 0, 900)
+floor6 = Floor(screen, 0, 900)
+# FIM====================================================================================================================
 
 
+# INIMIGOS====================================================================================================================
 
-#INIMIGOS====================================================================================================================
-
-box_boxer = Inimigo(screen,10,10,100)
+box_boxer = Inimigo(screen, 10, 10, 100)
 box_boxer_x = 550
-box_boxer_y = 0
+box_boxer_y = 900
 moves = 0
 
+# OBJETOS===================================================================================
 
-#FIM====================================================================================================================
+moeda1 = Coin(540, 500)
+moeda2 = Coin(540, 850)
+cereja1 = Cherry(540, 700)
+
+# FIM====================================================================================================================
 
 
-#SPRITES
+# SPRITES
 walk_kirby = pygame.sprite.Group()
 walk_kirby.add(kirby)
 
@@ -76,136 +82,176 @@ floor5_group.add(floor5)
 floor6_group = pygame.sprite.Group()
 floor6_group.add(floor6)
 
-#SPRITES
+moedas_group = pygame.sprite.Group()
+moedas_group.add(moeda1)
+moedas_group.add(moeda2)
+cerejas_group = pygame.sprite.Group()
+cerejas_group.add(cereja1)
+
+# SPRITES
 
 # collectables info
 
-draw_coin = True
-draw_potion = True
+draw_coin1 = True
+draw_coin2 = True
+draw_cherry1 = True
+points = 0
 
 # game loop
 
 while True:
-#CONFIGAÇÕES========================================================================================
-
-    clock.tick(120) #FPS
-    screen.fill('BLACK') 
+    # CONFIGAÇÕES========================================================================================
+    print(kirby_y)
+    clock.tick(120)  # FPS
+    screen.fill('BLACK')
     screen.blit(background, (0, 0))
-    parado = True #SETA O PERSONAGEM COMO PARADO
+    score = f'Points: {points}'
+    life_points = f'Life: {kirby.get_life()}/100'
+    text1 = font.render(score, True, 'BLACK')
+    text2 = font.render(life_points, True, 'RED')
+    parado = True  # SETA O PERSONAGEM COMO PARADO
 
-    t = clock.get_time() #COLETA O TEMPO DECORRIDO
-    f = gravidade*t #GERA ACERELAÇÃO DA GRAVIDADE
+    t = clock.get_time()  # COLETA O TEMPO DECORRIDO
+    acel_y= gravidade * t  # GERA ACERELAÇÃO DA GRAVIDADE
+    kirby_y += acel_y
 
-    if(acel_y_kirby < 525): #DEFINE O CHÃO
-        acel_y_kirby += f
-    
-    else:
-        acel_y_kirby = 525
+    if kirby_y > 526:  # DEFINE O CHÃO
+        kirby_y = 526
+        acel_y = 0
+        clock = pygame.time.Clock()
 
-    
-    if(box_boxer_y < 534.0000000000001): #DEFINE O CHÃO
-        box_boxer_y += f
+    if box_boxer_y < 534.0000000000001:  # DEFINE O CHÃO
+        box_boxer_y += acel_y
     else:
         box_boxer_y = 534.0000000000001
 
-#fim===============================================================================================
+    # fim===============================================================================================
 
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             exit()
 
-#MOVIMENTA O PERSONAGEM==================================================================================
+        # MOVIMENTA O PERSONAGEM==================================================================================
 
-        if (event.type == KEYDOWN):    
-            if(event.key == K_a):
+        if event.type == KEYDOWN:
+            if event.key == K_a:
                 kirby_x -= 2
+                if kirby_x < 0:
+                    kirby_x +=2
                 kirby.update_left()
                 parado = False
-            
-            if(event.key == K_d):
+
+            if event.key == K_d:
                 kirby_x += 2
-                kirby.update_right() 
+                if kirby_x > 930:
+                    kirby_x = 0
+                kirby.update_right()
                 parado = False
 
-            if(event.key == K_w):
-                kirby_y -= 5
+            if event.key == K_SPACE:
+                if kirby_y == 526:
+                    kirby_y -= 200
+                    acel_y = 0
 
-            if(event.key == K_s):
-                kirby_y += 5
-
-    if(pygame.key.get_pressed()[K_a]):
+    if pygame.key.get_pressed()[K_a]:
         kirby_x -= 3
+        if kirby_x < 0:
+            kirby_x += 3
         kirby.update_left()
         parado = False
-    if(pygame.key.get_pressed()[K_d]):
+    if pygame.key.get_pressed()[K_d]:
         kirby_x += 3
+        if kirby_x > 930:
+            kirby_x = 0
+            cerejas_group.add(cereja1)
+            moedas_group.add(moeda1)
+            moedas_group.add(moeda2)
+            draw_coin1 = True
+            draw_coin2 = True
+            draw_cherry1 = True
         kirby.update_right()
         parado = False
 
-    if(pygame.key.get_pressed()[K_w]):
-        kirby_y -= 1
-
-    if(pygame.key.get_pressed()[K_s]):
-        kirby_y += 5
-
-    if(parado == True):
+    if parado:
         kirby.stopped()
 
-#FIM===============================================================================================
+    # FIM===============================================================================================
 
+    # POSICIONA O CHÃO==================================================================================
 
-#POSICIONA O CHÃO==================================================================================
-    
-    floor.set_pos(0,605)
+    floor.set_pos(0, 605)
     floor.posicionar()
-    floor2.set_pos(200,605)
+    floor2.set_pos(200, 605)
     floor2.posicionar()
-    floor3.set_pos(400,605)
+    floor3.set_pos(400, 605)
     floor3.posicionar()
-    floor4.set_pos(600,605)
-    floor4.posicionar()    
-    floor5.set_pos(600,605)
-    floor5.posicionar()     
-    floor6.set_pos(800,605)
-    floor6.posicionar()  
+    floor4.set_pos(600, 605)
+    floor4.posicionar()
+    floor5.set_pos(600, 605)
+    floor5.posicionar()
+    floor6.set_pos(800, 605)
+    floor6.posicionar()
 
-#FIM==================================================================================
+    # FIM==================================================================================
     k_x = kirby.get_pos_x()
     k_y = kirby.get_pos_y()
     i_x = box_boxer.get_pos_x()
     i_y = int(box_boxer.get_pos_y())
 
-    
-    if(kirby.colision(k_x,k_y,i_x,i_y) <= 80):
-       kirby.damage(100)
+    if kirby.colision(k_x, k_y, i_x, i_y) <= 80:
+        if k_x < i_x:
+            kirby_x = k_x - 20
+        else:
+            kirby_x = k_x + 20
+        kirby.damage(10)
 
-       
-    if(kirby.get_life() >= 0):
-        kirby.set_pos(kirby_x,acel_y_kirby)
+    if draw_coin1:
+        if kirby.colision_coin(kirby.rect, moeda1.rect):
+            moedas_group.remove(moeda1)
+            draw_coin1 = False
+            points += 1
+
+    if draw_coin2:
+        if kirby.colision_coin(kirby.rect, moeda2.rect):
+            moedas_group.remove(moeda2)
+            draw_coin2 = False
+            points += 1
+
+    if draw_cherry1:
+        if kirby.colision_coin(kirby.rect, cereja1.rect):
+            draw_cherry1 = False
+            kirby.set_life(10)
+
+    if kirby.get_life() > 0:
+        kirby.set_pos(kirby_x, kirby_y)
         kirby.mover()
         walk_kirby.draw(screen)
+    else:
+        kirby.set_life(0)
 
-    box_boxer.set_pos(box_boxer_x,box_boxer_y)
+    box_boxer.set_pos(box_boxer_x, box_boxer_y)
     box_boxer.mover()
     box_boxer.update()
+    moeda1.update()
+    moeda2.update()
 
-    if(moves <= 0):
+    if moves <= 0:
         direita = True
 
-    if(moves >= 140):
+    if moves >= 140:
         direita = False
 
-    if(direita == True):
-        moves +=1
+    if direita:
+        moves += 1
         box_boxer_x += 2
-        
+
     else:
-        moves -=1
+        moves -= 1
         box_boxer.inverter(direita)
         box_boxer_x -= 2
-    
-#DESENHA chão====================================================================================
+
+    # DESENHA chão====================================================================================
 
     floor_group.draw(screen)
     floor2_group.draw(screen)
@@ -214,7 +260,13 @@ while True:
     floor5_group.draw(screen)
     floor6_group.draw(screen)
     walk_enemy.draw(screen)
+    if draw_coin1 or draw_coin2:
+        moedas_group.draw(screen)
+    if draw_cherry1:
+        cerejas_group.draw(screen)
 
-#FIM==================================================================================
-        
+    # FIM==================================================================================
+
+    screen.blit(text1, (750, 40))
+    screen.blit(text2, (475, 40))
     pygame.display.flip()
