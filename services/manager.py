@@ -4,13 +4,18 @@ import sqlite3
 connection = sqlite3.connect('database.db')
 cur = connection.cursor()
 
-cur.execute('''
-    CREATE TABLE IF NOT EXISTS players (
-        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        nick TEXT NOT NULL,
-        score INTEGER NOT NULL
-    );
-''')
+def create_table():
+    '''
+        Cria a tabela players
+    '''
+
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS players (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            nick TEXT NOT NULL,
+            score INTEGER NOT NULL
+        );
+    ''')
 
 def check_if_player_exists(nick: str):
     ''' 
