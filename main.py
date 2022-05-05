@@ -159,7 +159,8 @@ while True:
                 parado = False
 
             if event.key == K_SPACE:
-                jumping = True
+                if kirby_y == 526:
+                    jumping = True
 
     if pygame.key.get_pressed()[K_a]:
         kirby_x -= 4
