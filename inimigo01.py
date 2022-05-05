@@ -41,7 +41,7 @@ class Inimigo(pygame.sprite.Sprite):
 
     def update(self):
         if(self.index <= 4):
-            self.index += 0.2
+            self.index += 0.1
 
         else:
             self.index = 1

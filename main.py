@@ -13,6 +13,7 @@ pygame.init()
 # screen info
 
 gravidade = 0.25  # VALOR INICIAL DA GRAVIDADE
+gravidade_reversa = -0.25
 width = 960
 height = 720
 acel_y = 0  # VALOR INICIAL DA ACERELAÇÃO NO EIXO Y(ALTURA)
@@ -95,6 +96,7 @@ cerejas_group.add(cereja1)
 draw_coin1 = True
 draw_coin2 = True
 draw_cherry1 = True
+jumping = False
 points = 0
 
 # game loop
@@ -111,8 +113,11 @@ while True:
     parado = True  # SETA O PERSONAGEM COMO PARADO
 
     t = clock.get_time()  # COLETA O TEMPO DECORRIDO
-    acel_y= gravidade * t  # GERA ACERELAÇÃO DA GRAVIDADE
-    kirby_y += acel_y
+    acel_y = gravidade * t  # GERA ACERELAÇÃO DA GRAVIDADE
+    acel_pulo = gravidade_reversa * t
+
+    if not jumping:
+        kirby_y += acel_y
 
     if kirby_y > 526:  # DEFINE O CHÃO
         kirby_y = 526
@@ -124,6 +129,12 @@ while True:
         box_boxer_y = 534.0000000000001
 
     # fim===============================================================================================
+    if jumping:
+        if 526 >= kirby_y >= 300:
+            acel_y = 0
+            kirby_y -= 10
+            if kirby_y <= 300:
+                jumping = False
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -148,10 +159,7 @@ while True:
                 parado = False
 
             if event.key == K_SPACE:
-                if kirby_y == 526:
-                    kirby_y -= 225
-                    kirby.update_right()
-                    acel_y = 0
+                jumping = True
 
     if pygame.key.get_pressed()[K_a]:
         kirby_x -= 4

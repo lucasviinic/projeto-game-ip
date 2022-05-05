@@ -25,7 +25,6 @@ class Kirby(pygame.sprite.Sprite):
         self.__pos_x = x
         self.__pos_y = y
         self.__vida = vida_inicial
-        self.jumping = False
 
     def mover(self):
         self.rect[0] = self.__pos_x
@@ -37,7 +36,7 @@ class Kirby(pygame.sprite.Sprite):
     def get_pos_y(self):
         return int(self.__pos_y)
 
-    def set_pos(self,x,y):
+    def set_pos(self, x, y):
         self.__pos_x = x
         self.__pos_y = y
 
