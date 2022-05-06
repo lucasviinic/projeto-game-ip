@@ -12,11 +12,12 @@ pygame.init()
 
 # screen info
 
-gravidade = 0.25  # VALOR INICIAL DA GRAVIDADE
-gravidade_reversa = -0.25
+gravidade = 0.3  # VALOR INICIAL DA GRAVIDADE
+gravidade_reversa = -0.22
 width = 960
 height = 720
 acel_y = 0  # VALOR INICIAL DA ACERELAÇÃO NO EIXO Y(ALTURA)
+
 
 # CONFIGURAÇÕES GERAIS============================================================================================
 
@@ -31,9 +32,10 @@ clock = pygame.time.Clock()
 
 kirby_x = 80
 kirby_y = 540
-parado = True
-
+stopped = True
+jumping = False
 kirby = Kirby(screen, 50, 400, 100)
+fall = True
 
 # FIM=================================================================================================
 
@@ -61,7 +63,6 @@ moeda2 = Coin(540, 850)
 cereja1 = Cherry(540, 700)
 
 # FIM====================================================================================================================
-
 
 # SPRITES
 walk_kirby = pygame.sprite.Group()
@@ -96,7 +97,6 @@ cerejas_group.add(cereja1)
 draw_coin1 = True
 draw_coin2 = True
 draw_cherry1 = True
-jumping = False
 points = 0
 
 # game loop
@@ -110,11 +110,11 @@ while True:
     life_points = f'Life: {kirby.get_life()}/100'
     text1 = font.render(score, True, 'BLACK')
     text2 = font.render(life_points, True, 'RED')
-    parado = True  # SETA O PERSONAGEM COMO PARADO
+    stopped = True  # SETA O PERSONAGEM COMO PARADO
 
-    t = clock.get_time()  # COLETA O TEMPO DECORRIDO
-    acel_y = gravidade * t  # GERA ACERELAÇÃO DA GRAVIDADE
-    acel_pulo = gravidade_reversa * t
+    time = clock.get_time()  # COLETA O TEMPO DECORRIDO
+    acel_y = gravidade * time  # GERA ACERELAÇÃO DA GRAVIDADE
+    acel_pulo = gravidade_reversa * time
 
     if not jumping:
         kirby_y += acel_y
@@ -122,6 +122,9 @@ while True:
     if kirby_y > 526:  # DEFINE O CHÃO
         kirby_y = 526
         acel_y = 0
+        fall = False
+        time = pygame.time.Clock()
+
 
     if box_boxer_y < 534.0000000000001:  # DEFINE O CHÃO
         box_boxer_y += acel_y
@@ -130,11 +133,15 @@ while True:
 
     # fim===============================================================================================
     if jumping:
-        if 526 >= kirby_y >= 300:
+        if 526 >= kirby_y >= 320:
             acel_y = 0
             kirby_y -= 10
-            if kirby_y <= 300:
+            fall = False
+            time = pygame.time.Clock()
+
+            if kirby_y <= 320:
                 jumping = False
+                fall = True
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -148,15 +155,27 @@ while True:
                 kirby_x -= 3
                 if kirby_x < 0:
                     kirby_x += 3
-                kirby.update_left()
-                parado = False
+
+                if(jumping == True):
+                    kirby.update_jump()
+                else:
+                    kirby.update_left()
+
+                kirby.set_direction(False)
+                stopped = False
 
             if event.key == K_d:
                 kirby_x += 3
                 if kirby_x > 930:
                     kirby_x = 0
-                kirby.update_right()
-                parado = False
+
+                if(jumping == True):
+                    kirby.update_jump()
+                else:
+                    kirby.update_right()
+
+                kirby.set_direction(True)
+                stopped = False
 
             if event.key == K_SPACE:
                 if kirby_y == 526:
@@ -166,10 +185,23 @@ while True:
         kirby_x -= 4
         if kirby_x < 0:
             kirby_x += 4
-        kirby.update_left()
-        parado = False
+        
+        if(jumping == True):
+            kirby.update_jump()
+        else:
+            kirby.update_left()
+
+        stopped = False
+        
     if pygame.key.get_pressed()[K_d]:
         kirby_x += 4
+
+        if(jumping == True):
+            kirby.update_jump()
+        
+        else:
+            kirby.update_right()
+
         if kirby_x > 930:
             kirby_x = 0
             cerejas_group.add(cereja1)
@@ -178,11 +210,17 @@ while True:
             draw_coin1 = True
             draw_coin2 = True
             draw_cherry1 = True
-        kirby.update_right()
-        parado = False
 
-    if parado:
+        stopped = False
+
+    if stopped == True and jumping == False and fall == False:
         kirby.stopped()
+
+    elif(stopped == False and jumping == True):
+        kirby.update_jump()
+
+    elif(jumping == False and fall == True):
+        kirby.update_fall()
 
     # FIM===============================================================================================
 
@@ -208,10 +246,16 @@ while True:
     i_y = int(box_boxer.get_pos_y())
 
     if kirby.colision(k_x, k_y, i_x, i_y) <= 80:
+
         if k_x < i_x:
-            kirby_x = k_x - 20
+            kirby_x = k_x - 40
+            box_boxer_x += 40
         else:
-            kirby_x = k_x + 20
+            kirby_x = k_x + 40
+            box_boxer_x -= 40
+            
+            kirby.update_hited()
+
         kirby.damage(10)
 
     if draw_coin1:
@@ -259,7 +303,7 @@ while True:
         box_boxer.inverter(direita)
         box_boxer_x -= 2
 
-    # DESENHA chão====================================================================================
+    # DESENHA O CHÃO=========================================================================================
 
     floor_group.draw(screen)
     floor2_group.draw(screen)
@@ -268,6 +312,7 @@ while True:
     floor5_group.draw(screen)
     floor6_group.draw(screen)
     walk_enemy.draw(screen)
+
     if draw_coin1 or draw_coin2:
         moedas_group.draw(screen)
     if draw_cherry1:
