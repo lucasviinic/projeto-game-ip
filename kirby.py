@@ -34,6 +34,8 @@ class Kirby(pygame.sprite.Sprite):
             self.sprites.append(pygame.image.load(f"images/kirby/fall{i}.png"))
 
         self.sprites.append(pygame.image.load(f"images/kirby/hited.png"))
+        for i in range(1,10):
+            self.sprites.append(pygame.image.load(f"images/kirby/atk{i}.png"))
         
         self.__index = 0
         self.image = self.sprites[self.__index]
@@ -123,6 +125,7 @@ class Kirby(pygame.sprite.Sprite):
         self.__index = 8
         self.image = self.sprites[round(self.__index)]
         self.image = pygame.transform.scale(self.image, (80, 80))
+
         if(self.get_direction() == False):
             self.inverse()
 
@@ -151,3 +154,30 @@ class Kirby(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (80, 80))
         if(self.get_direction() == False):
             self.inverse()
+
+    def update_basic_atk(self):
+        if int(self.__index )== 19:
+            self.__index = 17
+
+        elif self.__index < 21 and self.__index >= 13 and self.__index < 17:
+            self.__index += 0.3
+
+
+        elif self.__index < 21 and self.__index >= 17:
+            self.__index += 0.065
+
+
+        elif(self.__index <13):
+            self.__index = 13
+
+        self.image = self.sprites[int(self.__index)]
+        self.image = pygame.transform.scale(self.image, (80, 80))          
+        if(self.get_direction() == False):
+            self.inverse()
+
+
+    def set_index(self, index):
+        self.__index = index
+
+    def get_index(self):
+        return self.__index
