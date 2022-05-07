@@ -34,9 +34,13 @@ class Kirby(pygame.sprite.Sprite):
             self.sprites.append(pygame.image.load(f"images/kirby/fall{i}.png"))
 
         self.sprites.append(pygame.image.load(f"images/kirby/hited.png"))
+
         for i in range(1,10):
             self.sprites.append(pygame.image.load(f"images/kirby/atk{i}.png"))
-        
+
+        for i in range(1,8):
+            self.sprites.append(pygame.image.load(f"images/kirby/run{i}.png"))
+            
         self.__index = 0
         self.image = self.sprites[self.__index]
         self.rect = self.image.get_rect()
@@ -46,6 +50,7 @@ class Kirby(pygame.sprite.Sprite):
         self.__pos_y = y
         self.__vida = vida_inicial
         self.__direction = True
+        self.__run = False
 
     def mover(self):
         self.rect[0] = self.__pos_x
@@ -181,3 +186,26 @@ class Kirby(pygame.sprite.Sprite):
 
     def get_index(self):
         return self.__index
+
+    def update_run(self):
+        if int(self.__index )== 26:
+            self.__index = 21
+
+        elif self.__index < 26 and self.__index >= 21:
+            self.__index += 0.3
+
+
+        elif(self.__index <21):
+            self.__index = 21
+
+
+        self.image = self.sprites[round(self.__index)]
+        self.image = pygame.transform.scale(self.image, (80, 80))
+        if(self.get_direction() == False):
+            self.inverse()
+
+    def get_run(self):
+        return self.__run
+
+    def set_run(self,status):
+        self.__run = status

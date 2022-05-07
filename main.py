@@ -39,8 +39,7 @@ stopped = True
 jumping = False
 kirby = Kirby(screen, 50, 400, 100)
 fall = True
-double_press_right = 0
-double_press_left = 0
+run = False
 
 
 # FIM=================================================================================================
@@ -133,6 +132,7 @@ while True:
     if (tempo_inicial - time_hit) >= 0.1 and box_boxer_colision == True:
         box_boxer_colision = False
 
+
     if not jumping:
         kirby_y += acel_y
 
@@ -166,8 +166,16 @@ while True:
 
         # MOVIMENTA O PERSONAGEM==================================================================================
 
-        if event.type == KEYDOWN:
+        if event.type == KEYDOWN and box_boxer_colision == False:
+            if(event.key == K_w):
+                if(kirby.get_run() == False):
+                    kirby.set_run(True)
+
+                else:
+                    kirby.set_run(False)
+
             if event.key == K_a:
+                double_press_confirm = False
                 kirby_x -= 220*variacao_tempo
                 if kirby_x < 0:
                     kirby_x += 3
@@ -180,24 +188,20 @@ while True:
                 kirby.set_direction(False)
                 stopped = False
 
-            if event.type == K_r:
+            if event.type == K_r and box_boxer_colision == False:
                 atacando = True
+                stopped = True
 
-            if event.key == K_d:
-                double_press_left = 0
+            if event.key == K_d and box_boxer_colision == False:
+                    
+                kirby_x += 220*variacao_tempo
+                if kirby_x > 930:
+                    kirby_x = 0
 
-                if(double_press_right < 2):
-                    double_press_right += 1
-
-                if(double_press_right < 2):
-                    kirby_x += 220*variacao_tempo
-                    if kirby_x > 930:
-                        kirby_x = 0
-
-                    if(jumping == True):
-                        kirby.update_jump()
-                    else:
-                        kirby.update_right()
+                if(jumping == True):
+                    kirby.update_jump()
+                else:
+                    kirby.update_right()
 
                 kirby.set_direction(True)
                 stopped = False
@@ -206,43 +210,45 @@ while True:
                 if kirby_y == 526:
                     jumping = True
 
-    if pygame.key.get_pressed()[K_r]:
+    if pygame.key.get_pressed()[K_r] and box_boxer_colision == False:
         atacando = True
+        stopped = True
 
-    if pygame.key.get_pressed()[K_a]:
-        if kirby_x < 0:
-            kirby_x += 4
+
+    if pygame.key.get_pressed()[K_a] and box_boxer_colision == False and pygame.key.get_pressed()[K_d] == False:
+        double_press_right = 0
+        stopped = False
+        kirby.set_direction(False)
         
         if(jumping == True):
             kirby.update_jump()
             kirby_x -= 350* variacao_tempo
 
-        else:
-            kirby.update_left()
-            kirby_x -= 220* variacao_tempo
+        elif(jumping == False):
+            if(kirby.get_run()== False):
+                kirby.update_left()
+                kirby_x -= 220* variacao_tempo
+            else:
+                kirby_x -=380* variacao_tempo
+                kirby.update_run()
 
         stopped = False
         
-    if pygame.key.get_pressed()[K_d]:
-        if(double_press_right <2):
+    if pygame.key.get_pressed()[K_d] and box_boxer_colision == False and pygame.key.get_pressed()[K_a] == False:
+        kirby.set_direction(True)
+        stopped = False
+        
+        if(jumping == True):
+            kirby.update_jump()
+            kirby_x += 350* variacao_tempo
 
-            if(jumping == True):
-                kirby.update_jump()
-                kirby_x += 350* variacao_tempo
-
-            else:
+        elif(jumping == False):
+            if(kirby.get_run()== False):
                 kirby.update_right()
                 kirby_x += 220* variacao_tempo
-
-        else:
-            if(jumping == True):
-                kirby.update_jump()
-                kirby_x += 350* variacao_tempo
-
             else:
-                kirby.update_right()
-                kirby_x += 220* variacao_tempo
-
+                kirby_x +=380* variacao_tempo
+                kirby.update_run()
 
         if kirby_x > 930:
             kirby_x = 0
@@ -270,41 +276,6 @@ while True:
     elif stopped == True and jumping == False and fall == False and atacando == True:
         
         kirby.update_basic_atk()
-
-        k_x = kirby.get_pos_x()
-        k_y = kirby.get_pos_y()
-        i_x = box_boxer.get_pos_x()
-        i_y = int(box_boxer.get_pos_y())
-
-        if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 170 and kirby.get_index() >= 17:
-
-            if kirby.get_pos_x() < box_boxer.get_pos_x() and kirby.get_direction() == True:
-                box_boxer_x -= 10
-
-                if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == True:
-                    box_boxer.set_vida(box_boxer.get_vida())
-
-            elif kirby.get_pos_x() > box_boxer.get_pos_x() and kirby.get_direction() == False:
-                box_boxer_x += 10
-
-                if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == True:
-                    box_boxer.set_vida(box_boxer.get_vida())
-
-            elif kirby.get_pos_x() < box_boxer.get_pos_x() and kirby.get_direction() == False and kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80:
-                kirby_x = kirby.get_pos_x() - 1000*variacao_tempo
-                box_boxer_x += 1500*variacao_tempo
-                time_hit = time.time()
-                box_boxer_colision = True
-                kirby.update_hited()
-                kirby.damage(int(1*box_boxer_x*variacao_tempo*coeficente_dano))
-
-            elif k_x > box_boxer.get_pos_x() and kirby.get_direction() == True and kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80:
-                kirby_x = kirby.get_pos_x() + 1000*variacao_tempo
-                box_boxer_x -= 1500*variacao_tempo
-                time_hit = time.time()
-                box_boxer_colision = True
-                kirby.update_hited()
-                kirby.damage(int(1*box_boxer_x*variacao_tempo*coeficente_dano))
             
     # FIM===============================================================================================
 
@@ -325,7 +296,7 @@ while True:
 
     # FIM========================================================================================
 
-    if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == False and box_boxer.get_vida() > 0:
+    if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == False and box_boxer.get_vida() > 0 and kirby.get_life() > 0:
 
         if kirby.get_pos_x() < box_boxer.get_pos_x():
             kirby_x = kirby.get_pos_x() - 1000*variacao_tempo
@@ -361,6 +332,36 @@ while True:
         kirby.set_pos(kirby_x, kirby_y)
         kirby.mover()
         walk_kirby.draw(screen)
+
+        if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 170 and kirby.get_index() >= 17 and kirby.get_life() > 0 and box_boxer.get_vida() > 0:
+
+            if kirby.get_pos_x() < box_boxer.get_pos_x() and kirby.get_direction() == True:
+                box_boxer_x -= 10
+
+                if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == True:
+                    box_boxer.set_vida(box_boxer.get_vida())
+
+            elif kirby.get_pos_x() > box_boxer.get_pos_x() and kirby.get_direction() == False:
+                box_boxer_x += 10
+
+                if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == True:
+                    box_boxer.set_vida(box_boxer.get_vida())
+
+            elif kirby.get_pos_x() < box_boxer.get_pos_x() and kirby.get_direction() == False and kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80:
+                kirby_x = kirby.get_pos_x() - 1000*variacao_tempo
+                box_boxer_x += 1500*variacao_tempo
+                time_hit = time.time()
+                box_boxer_colision = True
+                kirby.update_hited()
+                kirby.damage(int(1*box_boxer_x*variacao_tempo*coeficente_dano))
+
+            elif kirby.get_pos_x() > box_boxer.get_pos_x() and kirby.get_direction() == True and kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80:
+                kirby_x = kirby.get_pos_x() + 1000*variacao_tempo
+                box_boxer_x -= 1500*variacao_tempo
+                time_hit = time.time()
+                box_boxer_colision = True
+                kirby.update_hited()
+                kirby.damage(int(1*box_boxer_x*variacao_tempo*coeficente_dano))
     else:
         kirby.set_life(0)
 
