@@ -19,6 +19,7 @@ class Inimigo(pygame.sprite.Sprite):
         self.__pos_x = x
         self.__pos_y = y
         self.__vida = vida_inicial
+        self.__direction = True
 
     def mover(self):
         self.rect = (self.__pos_x,self.__pos_y)
@@ -49,12 +50,18 @@ class Inimigo(pygame.sprite.Sprite):
         self.image = self.sprites[round(self.index)]
         self.image = pygame.transform.scale(self.image,(80,80))
 
-    def inverter(self,crescer):
-        if(crescer == False):
-            self.image = pygame.transform.flip(self.image,True,False)
+    def inverter(self):
+        self.image = pygame.transform.flip(self.image, True, False)
+
 
     def get_pos(self):
         return self.rect
+
+    def get_direction(self):
+        return self.__direction
+
+    def set_direction(self,boolean):
+        self.__direction = boolean
 
     
     
