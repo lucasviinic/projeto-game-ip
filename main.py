@@ -344,7 +344,7 @@ while True:
 
     # FIM========================================================================================
 
-    if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == False and box_boxer.get_vida() > 0 and kirby.get_life() > 0:
+    if kirby.colision(kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == False and box_boxer.get_vida() > 0 and kirby.get_life() > 0:
 
         if kirby.get_pos_x() < box_boxer.get_pos_x():
             kirby_x = kirby.get_pos_x() - 1000*variacao_tempo
@@ -401,12 +401,16 @@ while True:
 
                 if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == True and kirby.get_direction() == True:
                     box_boxer.set_vida(box_boxer.get_vida())
+                    points += 2
+                    kirby.set_life(5)
 
             elif kirby.get_pos_x() > box_boxer.get_pos_x() and kirby.get_direction() == False:
                 box_boxer_x += 10
 
                 if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == True and kirby.get_direction() == False:
                     box_boxer.set_vida(box_boxer.get_vida())
+                    points += 2
+                    kirby.set_life(5)
 
             elif kirby.get_pos_x() < box_boxer.get_pos_x() and kirby.get_direction() == False and kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80:
                 kirby_x = kirby.get_pos_x() - 1000*variacao_tempo
