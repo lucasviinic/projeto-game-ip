@@ -4,6 +4,7 @@ from pygame.locals import *
 from sys import exit
 from kirby import Kirby
 from floor import Floor
+from floor import Floor2
 from inimigo01 import Inimigo
 from misc import Coin
 from misc import Cherry
@@ -24,6 +25,8 @@ F = 0  # VALOR INICIAL DA ACERELAÇÃO NO EIXO Y(ALTURA)
 screen = pygame.display.set_mode((width, height))
 background = pygame.image.load('images/background.png')
 background = pygame.transform.scale(background, (width, height))
+background2 = pygame.image.load('images/background2.png')
+background2 = pygame.transform.scale(background2, (width, height))
 pygame.display.set_caption('Kirby')
 font = pygame.font.SysFont('Akziden Ghost', 50, True, False)
 clock = pygame.time.Clock()
@@ -35,7 +38,7 @@ variacao_tempo = 0
 
 kirby_x = 80
 kirby_y = 540
-kirby = Kirby(screen, 300, 700, 100)
+kirby = Kirby(screen, 80, 700, 100)
 
 
 # FIM=================================================================================================
@@ -47,6 +50,13 @@ floor3 = Floor(screen, 0, 900)
 floor4 = Floor(screen, 0, 900)
 floor5 = Floor(screen, 0, 900)
 floor6 = Floor(screen, 0, 900)
+
+floor7 = Floor2(screen, 0, 900)
+floor8 = Floor2(screen, 0, 900)
+floor9 = Floor2(screen, 0, 900)
+floor10 = Floor2(screen, 0, 900)
+floor11 = Floor2(screen, 0, 900)
+floor12 = Floor2(screen, 0, 900)
 # FIM====================================================================================================================
 
 
@@ -66,7 +76,9 @@ acel_x_2 = 1
 
 moeda1 = Coin(540, 500)
 moeda2 = Coin(540, 850)
+moeda3 = Coin(540, 700)
 cereja1 = Cherry(540, 700)
+cereja2 = Cherry(540, 400)
 
 # FIM====================================================================================================================
 
@@ -89,6 +101,18 @@ floor5_group = pygame.sprite.Group()
 floor5_group.add(floor5)
 floor6_group = pygame.sprite.Group()
 floor6_group.add(floor6)
+floor7_group = pygame.sprite.Group()
+floor7_group.add(floor7)
+floor8_group = pygame.sprite.Group()
+floor8_group.add(floor8)
+floor9_group = pygame.sprite.Group()
+floor9_group.add(floor9)
+floor10_group = pygame.sprite.Group()
+floor10_group.add(floor10)
+floor11_group = pygame.sprite.Group()
+floor11_group.add(floor11)
+floor12_group = pygame.sprite.Group()
+floor12_group.add(floor12)
 
 moedas_group = pygame.sprite.Group()
 moedas_group.add(moeda1)
@@ -102,9 +126,12 @@ cerejas_group.add(cereja1)
 
 draw_coin1 = True
 draw_coin2 = True
+draw_coin3 = True
 draw_cherry1 = True
+draw_cherry2 = True
 points = 0
 acel_y = 0
+stage = 1
 
 # game loop
 
@@ -112,7 +139,10 @@ while True:
     # CONFIGAÇÕES========================================================================================
     clock.tick(60)  # FPS
     screen.fill('BLACK')
-    screen.blit(background, (0, 0))
+    if stage < 5:
+        screen.blit(background, (0, 0))
+    else:
+        screen.blit(background2, (0, 0))
     score = f'Points: {points}'
     life_points = f'Life: {kirby.get_life()}/100'
     text1 = font.render(score, True, 'BLACK')
@@ -178,8 +208,6 @@ while True:
 
             if event.key == K_a:
                 kirby.set_pos_x(kirby.get_pos_x()-(220* variacao_tempo))
-                if kirby.get_pos_x() < 0:
-                    kirby.set_pos_x(kirby.get_pos_x()+3)
 
                 if(kirby.get_jump() == True):
                     kirby.update_jump()
@@ -192,8 +220,6 @@ while True:
             if event.key == K_d and box_boxer_colision == False:
                     
                 kirby.set_pos_x(kirby.get_pos_x()+(220* variacao_tempo))
-                if kirby_x > 930:
-                    kirby.set_pos_x(0)
 
                 if(kirby.get_jump() == True):
                     kirby.update_jump()
@@ -207,6 +233,9 @@ while True:
                 if kirby.get_pos_y() == 526:
                     kirby.set_jump(True)
                     print(kirby.get_jump())
+
+    if kirby.get_pos_x() < 0:
+        kirby.set_pos_x(10)
 
     if pygame.key.get_pressed()[K_r] and box_boxer_colision == False and pygame.key.get_pressed()[K_a] == False and pygame.key.get_pressed()[K_d] == False and pygame.key.get_pressed()[K_SPACE] == False:
         atacando = True
@@ -248,6 +277,7 @@ while True:
                 kirby.update_run()
 
         if kirby.get_pos_x() > 930:
+            stage += 1
             kirby.set_pos_x(0)
             cerejas_group.add(cereja1)
             moedas_group.add(moeda1)
@@ -255,13 +285,21 @@ while True:
             draw_coin1 = True
             draw_coin2 = True
             draw_cherry1 = True
+            if stage == 4 or stage == 6:
+                draw_coin3 = True
+                moedas_group.add(moeda3)
+                draw_cherry1 = False
+            if stage == 5 or stage == 7:
+                draw_cherry2 = True
+                cerejas_group.add(cereja2)
+                draw_coin1, draw_coin2, draw_coin3 = False, False, False
 
         kirby.set_stopped(False)
 
     if kirby.get_stopped() == True and kirby.get_jump() == False and kirby.get_fall() == False and atacando == False and box_boxer_colision == False:
         kirby.stopped()
 
-    elif  kirby.get_jump() == True and box_boxer_colision == False and kirby.get_fall() == False:
+    elif kirby.get_jump() == True and box_boxer_colision == False and kirby.get_fall() == False:
         kirby.update_jump()
 
     elif kirby.get_jump() == False and kirby.get_fall() == True and box_boxer_colision == False and kirby.get_stopped() == False:
@@ -290,6 +328,18 @@ while True:
     floor5.posicionar()
     floor6.set_pos(800, 605)
     floor6.posicionar()
+    floor7.set_pos(0, 605)
+    floor7.posicionar()
+    floor8.set_pos(200, 605)
+    floor8.posicionar()
+    floor9.set_pos(400, 605)
+    floor9.posicionar()
+    floor10.set_pos(600, 605)
+    floor10.posicionar()
+    floor11.set_pos(600, 605)
+    floor11.posicionar()
+    floor12.set_pos(800, 605)
+    floor12.posicionar()
 
     # FIM========================================================================================
 
@@ -320,9 +370,22 @@ while True:
             draw_coin2 = False
             points += 1
 
+    if draw_coin3:
+        if kirby.colision_coin(kirby.rect, moeda3.rect):
+            moedas_group.remove(moeda3)
+            draw_coin3 = False
+            points += 1
+
     if draw_cherry1:
         if kirby.colision_coin(kirby.rect, cereja1.rect):
+            cerejas_group.remove(cereja1)
             draw_cherry1 = False
+            kirby.set_life(10)
+
+    if draw_cherry2:
+        if kirby.colision_coin(kirby.rect, cereja2.rect):
+            cerejas_group.remove(cereja2)
+            draw_cherry2 = False
             kirby.set_life(10)
 
     if kirby.get_life() > 0:
@@ -364,6 +427,7 @@ while True:
 
     moeda1.update()
     moeda2.update()
+    moeda3.update()
 
     if(box_boxer.get_vida() > 0):
 
@@ -409,16 +473,34 @@ while True:
 
     # DESENHA O CHÃO=========================================================================================
 
-    floor_group.draw(screen)
-    floor2_group.draw(screen)
-    floor3_group.draw(screen)
-    floor4_group.draw(screen)
-    floor5_group.draw(screen)
-    floor6_group.draw(screen)
+    if stage < 5:
+        floor_group.draw(screen)
+        floor2_group.draw(screen)
+        floor3_group.draw(screen)
+        floor4_group.draw(screen)
+        floor5_group.draw(screen)
+        floor6_group.draw(screen)
+    else:
+        floor7_group.draw(screen)
+        floor8_group.draw(screen)
+        floor9_group.draw(screen)
+        floor10_group.draw(screen)
+        floor11_group.draw(screen)
+        floor12_group.draw(screen)
+        walk_enemy.draw(screen)
 
-    if draw_coin1 or draw_coin2:
+    if stage == 2 or stage == 9:
+        moeda1.rect.x, moeda1.rect.y = 500, 350
+        moeda2.rect.x = 400
+        cereja1.rect.y = 300
+    if stage == 3 or stage == 8:
+        cereja1.rect.y = 500
+        moeda1.rect.x = 200
+        moeda1.rect.y = 500
+
+    if draw_coin1 or draw_coin2 or draw_coin3:
         moedas_group.draw(screen)
-    if draw_cherry1:
+    if draw_cherry1 or draw_cherry2:
         cerejas_group.draw(screen)
 
     # FIM==================================================================================
