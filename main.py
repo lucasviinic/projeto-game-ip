@@ -172,8 +172,6 @@ while True:
         kirby.set_fall(False)
         acel_y = 0
         time_game = pygame.time.Clock()
-
-    
  
     if box_boxer_y < 534.0000000000001:  # DEFINE O CHÃO
         box_boxer_y += F
@@ -294,6 +292,8 @@ while True:
                 draw_cherry2 = True
                 cerejas_group.add(cereja2)
                 draw_coin1, draw_coin2, draw_coin3 = False, False, False
+            if box_boxer.get_vida() <= 0:
+                box_boxer.set_vida(-100)
 
         kirby.set_stopped(False)
 
@@ -439,16 +439,22 @@ while True:
             box_boxer.update()
 
         if (kirby.get_direction() == True and box_boxer.get_direction()== False) and kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 200 and kirby.get_pos_x() < box_boxer.get_pos_x():
-            acel_x_1 = 1.7
+            acel_x_1 = 1.7 + (stage * 0.2)
             coeficiente_distancia = 1.2
             coeficente_dano = 3
 
         elif (kirby.get_direction() == False and box_boxer.get_direction()== True) and kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 200 and kirby.get_pos_x() > box_boxer.get_pos_x():
-            acel_x_2 = 1.7
+            acel_x_2 = 1.7 + (stage * 0.2)
             coeficiente_distancia = 1.2
             coeficente_dano = 3
 
-        if moves <= 0 :
+        if box_boxer_x <= 0:
+            moves = 0
+
+        if box_boxer_x >= 920:
+            moves = 140*coeficiente_distancia
+
+        if moves <= 0:
             direita = True
 
         if moves >= 140*coeficiente_distancia:
