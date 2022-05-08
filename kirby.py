@@ -15,8 +15,6 @@ from inimigo01 import Inimigo
 #funções do tipo "colision()": detecta alguma colisão entre o kirby e algum objeto
 
 
-
-
 class Kirby(pygame.sprite.Sprite):
 
     def __init__(self,tela,x,y,vida_inicial):
@@ -51,6 +49,9 @@ class Kirby(pygame.sprite.Sprite):
         self.__vida = vida_inicial
         self.__direction = True
         self.__run = False
+        self.__jumping = False
+        self.__stopped = True
+        self.__fall = False
 
     def mover(self):
         self.rect[0] = self.__pos_x
@@ -62,7 +63,14 @@ class Kirby(pygame.sprite.Sprite):
     def get_pos_y(self):
         return int(self.__pos_y)
 
-    def set_pos(self, x, y):
+    def set_pos_x(self, x):
+        self.__pos_x = x
+
+
+    def set_pos_y(self, y):
+        self.__pos_y = y
+
+    def set_pos(self,x, y):
         self.__pos_x = x
         self.__pos_y = y
 
@@ -72,7 +80,6 @@ class Kirby(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (80, 80))
         if(self.get_direction() == False):
             self.inverse()
-            
 
     def update_right(self):
 
@@ -169,7 +176,7 @@ class Kirby(pygame.sprite.Sprite):
 
 
         elif self.__index < 21 and self.__index >= 17:
-            self.__index += 0.065
+            self.__index += 0.075
 
 
         elif(self.__index <13):
@@ -198,7 +205,6 @@ class Kirby(pygame.sprite.Sprite):
         elif(self.__index <21):
             self.__index = 21
 
-
         self.image = self.sprites[round(self.__index)]
         self.image = pygame.transform.scale(self.image, (80, 80))
         if(self.get_direction() == False):
@@ -209,3 +215,21 @@ class Kirby(pygame.sprite.Sprite):
 
     def set_run(self,status):
         self.__run = status
+
+    def set_jump(self,status):
+        self.__jumping = status
+
+    def get_jump(self):
+        return self.__jumping
+
+    def get_stopped(self):
+        return self.__stopped
+
+    def set_stopped(self,status):
+        self.__stopped = status
+
+    def get_fall(self):
+        return self.__fall
+
+    def set_fall(self,status):
+        self.__fall = status
