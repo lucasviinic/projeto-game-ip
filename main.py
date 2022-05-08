@@ -1,14 +1,15 @@
-from ast import walk
+import time
+from sys import exit
+
 import pygame
 from pygame.locals import *
-from sys import exit
-from kirby import Kirby
+
 from floor import Floor
 from floor import Floor2
 from inimigo01 import Inimigo
-from misc import Coin
+from kirby import Kirby
 from misc import Cherry
-import time
+from misc import Coin
 
 pygame.init()
 
@@ -487,7 +488,6 @@ while True:
         floor10_group.draw(screen)
         floor11_group.draw(screen)
         floor12_group.draw(screen)
-        walk_enemy.draw(screen)
 
     if stage == 2 or stage == 9:
         moeda1.rect.x, moeda1.rect.y = 500, 350
