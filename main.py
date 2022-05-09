@@ -301,6 +301,11 @@ while True:
                     moedas_group.add(moeda2)
                 if cereja1 not in cerejas_group:
                     cerejas_group.add(cereja1)
+                if cereja2 in cerejas_group:
+                    cerejas_group.remove(cereja2)
+                if moeda3 in moedas_group:
+                    moedas_group.remove(moeda3)
+
 
     if kirby.get_pos_x() < 0:
         kirby.set_pos_x(10)
