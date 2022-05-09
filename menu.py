@@ -84,11 +84,14 @@ def main_menu():
                             text_input="PLAY", font=get_font(45), base_color="#d7fcd4", hovering_color="White")
 
         ranking_list = get_players_sorted_by_score()[:3]
+        if len(ranking_list) < 3:
+            while len(ranking_list) < 3:
+                ranking_list.append((int, "---", "---"))
 
-        FIRST_PLACE_TEXT = get_font(36).render(f"1. {ranking_list[0][1]}", True, "#b68f40")
+        FIRST_PLACE_TEXT = get_font(26).render(f"1. {ranking_list[0][1]}", True, "#b68f40")
         FIRST_PLACE_RECT = FIRST_PLACE_TEXT.get_rect(center=(480, 550))
 
-        SECOND_PLACE_TEXT = get_font(31).render(f"2. {ranking_list[1][1]}", True, "#b68f40")
+        SECOND_PLACE_TEXT = get_font(26).render(f"2. {ranking_list[1][1]}", True, "#b68f40")
         SECOND_PLACE_RECT = SECOND_PLACE_TEXT.get_rect(center=(480, 600))
 
         THIRD_PLACE_TEXT = get_font(26).render(f"3. {ranking_list[2][1]}", True, "#b68f40")
