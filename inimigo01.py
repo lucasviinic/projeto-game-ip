@@ -75,6 +75,9 @@ class Inimigo(pygame.sprite.Sprite):
 
     def set_pos_y(self, y):
         self.__pos_y = y
+
+    def set_index(self, index):
+        self.__index = index
     
     
     
