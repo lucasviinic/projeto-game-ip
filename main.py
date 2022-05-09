@@ -34,6 +34,8 @@ clock = pygame.time.Clock()
 tempo_inicial = time.time()
 time_hit = time.time()
 variacao_tempo = 0
+musica = pygame.mixer.music.load('musica.mp3')
+pygame.mixer.music.play(-1)
 
 def exibe_mensagem(msg, tamanho, cor):
     fonte = pygame.font.SysFont('Akziden Ghost', tamanho, True, False)
@@ -161,6 +163,10 @@ while True:
     clock.tick(60)  # FPS
     screen.fill('BLACK')
 
+    print(kirby.get_life())
+    if kirby.get_life() > 0:
+        pygame.mixer.music.set_volume(0.2)
+
     if moeda1 in moedas_group:
         draw_coin1 = True
     if moeda2 in moedas_group:
@@ -181,6 +187,7 @@ while True:
     pygame.draw.rect(screen, (255, 0, 0), (50, 50, 200 - reducao_barra, 10))
     cereja_barra.draw(screen)
     moedas_points.draw(screen)
+
     if(acel_y == 0):
         kirby.set_stopped(True)
 
@@ -277,6 +284,7 @@ while True:
                     print(kirby.get_jump())
 
             if event.key == K_t and kirby.get_life() <= 0:
+                pygame.mixer.music.rewind()
                 kirby.set_pos_x(80)
                 kirby.set_pos_y(526)
                 kirby.set_life(100)
@@ -494,8 +502,9 @@ while True:
                 kirby.damage(int(1*box_boxer.get_pos_x()*variacao_tempo*coeficente_dano))
     else:
         kirby.set_life(0)
-        screen.blit(game_over, (280, 360))
-        screen.blit(restart, (330, 440))
+        pygame.mixer.music.set_volume(0)
+        screen.blit(game_over, (280, 260))
+        screen.blit(restart, (330, 340))
         box_boxer.set_pos_x(600)
         box_boxer.set_pos_y(534.0000000000001)
         
