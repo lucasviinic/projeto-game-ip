@@ -81,6 +81,11 @@ moeda3 = Coin(540, 700)
 cereja1 = Cherry(540, 700)
 cereja2 = Cherry(540, 400)
 
+# OBJETOS BARRA DE VIDA E PONTUAÇÃO=========================================================================
+
+moeda_pont = Coin(20, 255)
+cereja_vida = Cherry(20, 15)
+
 # FIM====================================================================================================================
 
 # SPRITES
@@ -123,6 +128,11 @@ cerejas_group.add(cereja1)
 
 # SPRITES
 
+cereja_barra = pygame.sprite.Group()
+moedas_points = pygame.sprite.Group()
+cereja_barra.add(cereja_vida)
+moedas_points.add(moeda_pont)
+
 # collectables info
 
 draw_coin1 = True
@@ -145,9 +155,13 @@ while True:
     else:
         screen.blit(background2, (0, 0))
     score = f'Points: {points}'
-    life_points = f'Life: {kirby.get_life()}/100'
+    life_points = 100 - kirby.get_life()
+    reducao_barra = 2 * life_points
     text1 = font.render(score, True, 'BLACK')
-    text2 = font.render(life_points, True, 'RED')
+    pygame.draw.rect(screen, (0, 0, 0), (48, 47, 204, 15))
+    pygame.draw.rect(screen, (255, 0, 0), (50, 50, 200 - reducao_barra, 10))
+    cereja_barra.draw(screen)
+    moedas_points.draw(screen)
     if(acel_y == 0):
         kirby.set_stopped(True)
 
@@ -515,6 +529,5 @@ while True:
 
     # FIM==================================================================================
 
-    screen.blit(text1, (750, 40))
-    screen.blit(text2, (475, 40))
+    screen.blit(text1, (305, 36))
     pygame.display.flip()
