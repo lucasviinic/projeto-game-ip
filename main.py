@@ -154,7 +154,7 @@ while True:
         screen.blit(background, (0, 0))
     else:
         screen.blit(background2, (0, 0))
-    score = f'Points: {points}'
+    score = f'{points}'
     life_points = 100 - kirby.get_life()
     reducao_barra = 2 * life_points
     text1 = font.render(score, True, 'BLACK')
@@ -415,7 +415,6 @@ while True:
 
                 if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == True and kirby.get_direction() == True:
                     box_boxer.set_vida(box_boxer.get_vida())
-                    points += 2
                     kirby.set_life(5)
 
             elif kirby.get_pos_x() > box_boxer.get_pos_x() and kirby.get_direction() == False:
@@ -423,7 +422,6 @@ while True:
 
                 if kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80 and atacando == True and kirby.get_direction() == False:
                     box_boxer.set_vida(box_boxer.get_vida())
-                    points += 2
                     kirby.set_life(5)
 
             elif kirby.get_pos_x() < box_boxer.get_pos_x() and kirby.get_direction() == False and kirby.colision (kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(), box_boxer.get_pos_y()) <= 80:
