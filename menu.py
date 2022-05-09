@@ -78,7 +78,7 @@ def main_menu():
         MENU_TEXT = get_font(70).render("MAIN MENU", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(480, 100))
 
-        pygame.draw.rect(SCREEN, "white", (230, 250, 480, 73))
+        pygame.draw.rect(SCREEN, "white", (236, 250, 480, 73))
 
         PLAY_BUTTON = Button(image=pygame.image.load("./assets/play_rect.png"), pos=(480, 400), 
                             text_input="PLAY", font=get_font(45), base_color="#d7fcd4", hovering_color="White")
