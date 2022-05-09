@@ -52,6 +52,8 @@ class Kirby(pygame.sprite.Sprite):
         self.__jumping = False
         self.__stopped = True
         self.__fall = False
+        self.__moving = False
+        self.__attack = False
 
     def mover(self):
         self.rect[0] = self.__pos_x
@@ -233,3 +235,15 @@ class Kirby(pygame.sprite.Sprite):
 
     def set_fall(self,status):
         self.__fall = status
+
+    def get_moving(self):
+        return self.__moving
+
+    def set_moving(self,status):
+        self.__moving = status
+
+    def get_attack(self):
+        return self.__attack
+
+    def set_attack(self,status):
+        self.__attack = status

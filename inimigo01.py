@@ -11,7 +11,7 @@ class Inimigo(pygame.sprite.Sprite):
         for i in range(1,6):
             self.sprites.append(pygame.image.load(f"images/boxboxer/andando_{i}.png"))
 
-        self.index = 0
+        self.__index = 0
         self.image = self.sprites[0]
         self.rect = self.image.get_rect()
         self.rect = 100,100
@@ -41,13 +41,13 @@ class Inimigo(pygame.sprite.Sprite):
         return int(self.__vida)
 
     def update(self):
-        if(self.index <= 4):
-            self.index += 0.1
+        if(self.__index <= 4):
+            self.__index += 0.1
 
         else:
-            self.index = 1
+            self.__index = 1
         
-        self.image = self.sprites[round(self.index)]
+        self.image = self.sprites[round(self.__index)]
         self.image = pygame.transform.scale(self.image,(80,80))
 
     def inverter(self):
@@ -63,6 +63,18 @@ class Inimigo(pygame.sprite.Sprite):
     def set_direction(self,boolean):
         self.__direction = boolean
 
+    def get_pos_x(self):
+        return int(self.__pos_x)
+
+    def get_pos_y(self):
+        return int(self.__pos_y)
+
+    def set_pos_x(self, x):
+        self.__pos_x = x
+
+
+    def set_pos_y(self, y):
+        self.__pos_y = y
     
     
     
