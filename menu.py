@@ -37,7 +37,7 @@ SCREEN = pygame.display.set_mode((960, 720))
 pygame.display.set_caption("Kirby - Menu")
 clock = pygame.time.Clock()
 
-BG = pygame.image.load("./assets/Background.png")
+BG = pygame.image.load("./images/background_menu.jpg")
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("./assets/font.ttf", size)
