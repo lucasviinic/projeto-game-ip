@@ -36,6 +36,7 @@ time_hit = time.time()
 time_variation = 0
 music = pygame.mixer.music.load('sounds/musica.mp3')
 pygame.mixer.music.play(-1)
+nick = 'Nickname'
 
 
 def show_message(msg, size, color):
@@ -47,6 +48,7 @@ def show_message(msg, size, color):
 
 game_over = show_message('GAME OVER', 80, (0, 0, 255))
 restart = show_message('Press T To Restart', 40, (0, 125, 125))
+nick = show_message(f'{nick}', 30, (0, 0, 0))
 
 # KIRBY INFORMAÇÕES============================================================================================
 
@@ -577,4 +579,5 @@ while True:
     # FIM==================================================================================
 
     screen.blit(text1, (305, 36))
+    screen.blit(nick, (60, 20))
     pygame.display.flip()
