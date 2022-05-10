@@ -54,8 +54,8 @@ def main_menu(nome_jogador: str):
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        MENU_TEXT = get_font(70).render("MAIN MENU", True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(center=(480, 100))
+        LOGO = pygame.image.load("./images/logo.png")
+        LOGO_RECT = LOGO.get_rect(center=(480, 100))
 
         PLAY_BUTTON = Button(image=pygame.image.load("./assets/play_rect.png"), pos=(480, 400), 
                             text_input="PLAY", font=get_font(45), base_color="#d7fcd4", hovering_color="White")
@@ -74,7 +74,7 @@ def main_menu(nome_jogador: str):
         THIRD_PLACE_TEXT = get_font(26).render(f"3. {ranking_list[2][1]}", True, "#b68f40")
         THIRD_PLACE_RECT = THIRD_PLACE_TEXT.get_rect(center=(480, 650))
 
-        SCREEN.blit(MENU_TEXT, MENU_RECT)
+        SCREEN.blit(LOGO, LOGO_RECT)
 
         SCREEN.blit(FIRST_PLACE_TEXT, FIRST_PLACE_RECT)
         SCREEN.blit(SECOND_PLACE_TEXT, SECOND_PLACE_RECT)
