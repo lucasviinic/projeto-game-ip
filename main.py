@@ -273,7 +273,6 @@ while True:
             if event.key == K_SPACE:
                 if kirby.get_pos_y() == 526:
                     kirby.set_jump(True)
-                    print(kirby.get_jump())
 
             if event.key == K_t and kirby.get_life() <= 0:
                 kirby.set_pos_x(80)
@@ -502,7 +501,6 @@ while True:
 
     moeda1.update()
     moeda2.update()
-    moeda3.update()
 
     if (box_boxer.get_vida() > 0):
 
