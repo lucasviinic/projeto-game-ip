@@ -36,6 +36,7 @@ pygame.init()
 
 SCREEN = pygame.display.set_mode((960, 720))
 pygame.display.set_caption("Kirby - Menu")
+clock = pygame.time.Clock()
 
 BG = pygame.image.load("./assets/Background.png")
 
@@ -68,8 +69,10 @@ def play():
 
         pygame.display.update()
 
-
 def main_menu():
+
+    nickname = ''
+
     while True:
         SCREEN.blit(BG, (0, 0))
 
@@ -77,8 +80,6 @@ def main_menu():
 
         MENU_TEXT = get_font(70).render("MAIN MENU", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(480, 100))
-
-        pygame.draw.rect(SCREEN, "white", (236, 250, 480, 73))
 
         PLAY_BUTTON = Button(image=pygame.image.load("./assets/play_rect.png"), pos=(480, 400), 
                             text_input="PLAY", font=get_font(45), base_color="#d7fcd4", hovering_color="White")
@@ -113,8 +114,21 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    print('Nickname:', nickname)
                     play()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    nickname = nickname[:-1]
+                else:
+                    if len(nickname) < 10:
+                        nickname += event.unicode
 
-        pygame.display.update()
+        pygame.draw.rect(SCREEN, "white", (236, 250, 480, 73), 2)
+        text_surface = get_font(36).render(nickname, True, "black")
+        SCREEN.blit(text_surface, (255, 270))
+
+        pygame.display.flip()
+        clock.tick(60)
+
 
 main_menu()
