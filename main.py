@@ -10,6 +10,7 @@ from inimigo01 import Inimigo
 from kirby import Kirby
 from misc import Cherry
 from misc import Coin
+from random import randint
 
 pygame.init()
 
@@ -85,9 +86,7 @@ acel_x_2 = 1
 
 moeda1 = Coin(540, 500)
 moeda2 = Coin(540, 850)
-moeda3 = Coin(540, 700)
 cereja1 = Cherry(540, 700)
-cereja2 = Cherry(540, 400)
 
 # OBJETOS BARRA DE VIDA E PONTUAÇÃO=========================================================================
 
@@ -145,9 +144,7 @@ moedas_points.add(moeda_pont)
 
 draw_coin1 = True
 draw_coin2 = True
-draw_coin3 = True
 draw_cherry1 = True
-draw_cherry2 = True
 points = 0
 acel_y = 0
 stage = 1
@@ -297,10 +294,6 @@ while True:
                 if cereja1 not in cerejas_group:
                     cerejas_group.add(cereja1)
 
-                if cereja2 in cerejas_group:
-                    cerejas_group.remove(cereja2)
-                if moeda3 in moedas_group:
-                    moedas_group.remove(moeda3)
 
     if kirby.get_pos_x() < 0:
         kirby.set_pos_x(10)
@@ -358,14 +351,9 @@ while True:
             draw_coin1 = True
             draw_coin2 = True
             draw_cherry1 = True
-            if stage == 4 or stage == 6:
-                draw_coin3 = True
-                moedas_group.add(moeda3)
-                draw_cherry1 = False
-            if stage == 5 or stage == 7:
-                draw_cherry2 = True
-                cerejas_group.add(cereja2)
-                draw_coin1, draw_coin2, draw_coin3 = False, False, False
+            moeda1.rect.x, moeda1.rect.y = randint(300, 900), randint(200, 540)
+            moeda2.rect.x, moeda2.rect.y = randint(300, 900), 540
+            cereja1.rect.x, cereja1.rect.y = randint(300, 900), randint(200, 540)
             if box_boxer.get_vida() <= 0:
                 box_boxer.set_vida(-100)
 
@@ -453,22 +441,10 @@ while True:
             draw_coin2 = False
             points += 1
 
-    if draw_coin3:
-        if kirby.colision_coin(kirby.rect, moeda3.rect):
-            moedas_group.remove(moeda3)
-            draw_coin3 = False
-            points += 1
-
     if draw_cherry1:
         if kirby.colision_coin(kirby.rect, cereja1.rect):
             cerejas_group.remove(cereja1)
             draw_cherry1 = False
-            kirby.set_life(10)
-
-    if draw_cherry2:
-        if kirby.colision_coin(kirby.rect, cereja2.rect):
-            cerejas_group.remove(cereja2)
-            draw_cherry2 = False
             kirby.set_life(10)
 
     if kirby.get_life() > 0:
@@ -597,18 +573,9 @@ while True:
         floor11_group.draw(screen)
         floor12_group.draw(screen)
 
-    if stage == 2 or stage == 9:
-        moeda1.rect.x, moeda1.rect.y = 500, 350
-        moeda2.rect.x = 400
-        cereja1.rect.y = 300
-    if stage == 3 or stage == 8:
-        cereja1.rect.y = 500
-        moeda1.rect.x = 200
-        moeda1.rect.y = 500
-
-    if draw_coin1 or draw_coin2 or draw_coin3:
+    if draw_coin1 or draw_coin2:
         moedas_group.draw(screen)
-    if draw_cherry1 or draw_cherry2:
+    if draw_cherry1:
         cerejas_group.draw(screen)
 
     # FIM==================================================================================
