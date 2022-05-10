@@ -450,14 +450,14 @@ def play(nickname: str):
             walk_kirby.draw(screen)
 
             if kirby.colision(kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(),
-                            box_boxer.get_pos_y()) <= 170 and 17 <= kirby.get_index() <= 21 and kirby.get_life() > 0 and\
+                    box_boxer.get_pos_y()) <= 170 and 17 <= kirby.get_index() <= 21 and kirby.get_life() > 0 and\
                     box_boxer.get_vida() > 0 and kirby.get_stopped():
 
                 if kirby.get_pos_x() < box_boxer.get_pos_x() and kirby.get_direction() == True:
                     box_boxer.set_pos_x(box_boxer.get_pos_x() - 10)
 
                     if kirby.colision(kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(),
-                                    box_boxer.get_pos_y()) <= 80 and attacking and kirby.get_direction():
+                        box_boxer.get_pos_y()) <= 80 and attacking and kirby.get_direction():
                         box_boxer.set_vida(box_boxer.get_vida())
                         kirby.set_life(5)
 
@@ -514,12 +514,10 @@ def play(nickname: str):
                 box_boxer.update()
 
             if (kirby.get_direction() and not box_boxer.get_direction()) and kirby.colision(kirby.get_pos_x(),
-                                                                                                        kirby.get_pos_y(),
-                                                                                                        box_boxer.get_pos_x(),
-                                                                                                        box_boxer.get_pos_y()) <= 200 and kirby.get_pos_x() < box_boxer.get_pos_x():
+                kirby.get_pos_y(),box_boxer.get_pos_x(),box_boxer.get_pos_y()) <= 200 and kirby.get_pos_x() < box_boxer.get_pos_x():
                 acel_x_2 = 2 + (stage * 0.2)
-                coeficiente_distancia = 1.2
-                coeficente_dano = 2
+                distance_coefficient = 1.2
+                damage_coefficient = 2
 
             elif (not kirby.get_direction() and box_boxer.get_direction()) and kirby.colision(
                     kirby.get_pos_x(), kirby.get_pos_y(), box_boxer.get_pos_x(),

@@ -178,7 +178,7 @@ class Kirby(pygame.sprite.Sprite):
         elif 21 > self.__index >= 17:
             self.__index += 0.075
 
-        elif self.__index < 13:
+        elif self.__index < 13 or self.__index >= 21:
             self.__index = 13
 
         self.image = self.sprites[int(self.__index)]
@@ -205,10 +205,9 @@ class Kirby(pygame.sprite.Sprite):
 
         self.image = self.sprites[round(self.__index)]
         self.image = pygame.transform.scale(self.image, (80, 80))
+
         if(self.get_direction() == False):
             self.inverse()
-
-
 
     def get_run(self):
         return self.__run
