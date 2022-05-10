@@ -49,7 +49,15 @@ with sqlite3.connect(db_path) as connection:
         '''
 
         if check_if_player_exists(nick):
-            return False
+             player = get_player(nick)
+             score = int(score)
+             
+             if score > player[2]:
+                 update_score(nick, score)
+                 return True
+             else:
+                return False
+
         
         cur.execute("INSERT INTO players (nick, score) VALUES (?, ?)", (nick, score))
         connection.commit()
