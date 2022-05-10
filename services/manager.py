@@ -5,22 +5,22 @@ import sqlite3
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "database.db")
 
+def create_table():
+    '''
+        Cria a tabela players
+    '''
+
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS players (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            nick TEXT NOT NULL,
+            score INTEGER NOT NULL
+        );
+    ''')
+
 with sqlite3.connect(db_path) as connection:
 
     cur = connection.cursor()
-
-    def create_table():
-        '''
-            Cria a tabela players
-        '''
-
-        cur.execute('''
-            CREATE TABLE IF NOT EXISTS players (
-                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                nick TEXT NOT NULL,
-                score INTEGER NOT NULL
-            );
-        ''')
 
     def check_if_player_exists(nick: str):
         ''' 
@@ -71,6 +71,24 @@ with sqlite3.connect(db_path) as connection:
 
         connection.commit()
         return True
+
+    #Busca player por nick
+    def get_player(nick: str):
+        '''
+            Busca um usuário pelo nick
+
+            Parâmetros:
+                nick: nick do usuário
+        '''
+            
+        cur.execute("SELECT * FROM players WHERE nick = ?", (nick,))
+        player = cur.fetchone()
+
+        if player:
+            return player
+        else:
+            return False
+
 
     def get_players_sorted_by_score():
         '''

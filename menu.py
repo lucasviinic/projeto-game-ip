@@ -71,6 +71,7 @@ def play():
 
 def main_menu():
 
+    create_table()
     nickname = ''
 
     while True:
@@ -114,7 +115,7 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    print('Nickname:', nickname)
+                    print("Nickname:", nickname)
                     play()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
