@@ -3,42 +3,42 @@ import pygame
 from pygame.locals import *
 import math
 from floor import Floor
-from inimigo01 import Inimigo
 
-#DESCRIÇÃO SOBRE AS FUNÇÕES
 
-#MOVE(): altera a posição do kirby
-#qualquer função "set()": altera alguma caracterisca do kirby
-#qualquer função "get()": coleca o valor de alguma informação do kirby
-#inverse(): inverte o lado do sprite
-#updates(): alteram os sprites para determinada situação
-#funções do tipo "colision()": detecta alguma colisão entre o kirby e algum objeto
+# DESCRIÇÃO SOBRE AS FUNÇÕES
+
+# MOVE(): altera a posição do kirby
+# qualquer função "set()": altera alguma caracterisca do kirby
+# qualquer função "get()": coleca o valor de alguma informação do kirby
+# inverse(): inverte o lado do sprite
+# updates(): alteram os sprites para determinada situação
+# funções do tipo "colision()": detecta alguma colisão entre o kirby e algum objeto
 
 
 class Kirby(pygame.sprite.Sprite):
 
-    def __init__(self,tela,x,y,vida_inicial):
+    def __init__(self, tela, x, y, vida_inicial):
         pygame.sprite.Sprite.__init__(self)
 
         self.sprites = []
 
         self.sprites.append(pygame.image.load(f"images/kirby/stopped.png"))
-        for i in range(2,9):
+        for i in range(2, 9):
             self.sprites.append(pygame.image.load(f"images/kirby/walk{i}.png"))
 
         self.sprites.append(pygame.image.load(f"images/kirby/jump.png"))
 
-        for i in range(1,3):
+        for i in range(1, 3):
             self.sprites.append(pygame.image.load(f"images/kirby/fall{i}.png"))
 
         self.sprites.append(pygame.image.load(f"images/kirby/hited.png"))
 
-        for i in range(1,10):
+        for i in range(1, 10):
             self.sprites.append(pygame.image.load(f"images/kirby/atk{i}.png"))
 
-        for i in range(1,8):
+        for i in range(1, 8):
             self.sprites.append(pygame.image.load(f"images/kirby/run{i}.png"))
-            
+
         self.__index = 0
         self.image = self.sprites[self.__index]
         self.rect = self.image.get_rect()
@@ -68,11 +68,10 @@ class Kirby(pygame.sprite.Sprite):
     def set_pos_x(self, x):
         self.__pos_x = x
 
-
     def set_pos_y(self, y):
         self.__pos_y = y
 
-    def set_pos(self,x, y):
+    def set_pos(self, x, y):
         self.__pos_x = x
         self.__pos_y = y
 
@@ -80,7 +79,7 @@ class Kirby(pygame.sprite.Sprite):
         self.__index = 0
         self.image = self.sprites[int(self.__index)]
         self.image = pygame.transform.scale(self.image, (80, 80))
-        if(self.get_direction() == False):
+        if not self.get_direction():
             self.inverse()
 
     def update_right(self):
@@ -90,9 +89,9 @@ class Kirby(pygame.sprite.Sprite):
 
         else:
             self.__index = 1
-        
+
         self.image = self.sprites[round(self.__index)]
-        self.image = pygame.transform.scale(self.image,(80,80))
+        self.image = pygame.transform.scale(self.image, (80, 80))
 
     def update_left(self):
         if self.__index <= 6:
@@ -100,13 +99,13 @@ class Kirby(pygame.sprite.Sprite):
 
         else:
             self.__index = 1
-        
+
         self.image = self.sprites[round(self.__index)]
         self.image = pygame.transform.scale(self.image, (80, 80))
         self.inverse()
 
     def on_floor(self, kirby_x, kirby_y, floor_x, floor_y):
-        return floor_y - kirby_y 
+        return floor_y - kirby_y
 
     def get_pos(self):
         return self.rect
@@ -121,12 +120,12 @@ class Kirby(pygame.sprite.Sprite):
         if self.__vida <= 0:
             self.__vida = 0
 
-    def damage(self,damage):
+    def damage(self, damage):
         self.__vida -= damage
         return self.__vida
 
-    def colision(self,player_x, player_y,inimigo_x,inimigo_y):
-        valor = int(math.sqrt(((inimigo_x-player_x)**2)+(inimigo_y-player_y)**2))
+    def colision(self, player_x, player_y, inimigo_x, inimigo_y):
+        valor = int(math.sqrt(((inimigo_x - player_x) ** 2) + (inimigo_y - player_y) ** 2))
         return valor
 
     def colision_coin(self, k_rect, c_rect):
@@ -140,17 +139,17 @@ class Kirby(pygame.sprite.Sprite):
         self.image = self.sprites[round(self.__index)]
         self.image = pygame.transform.scale(self.image, (80, 80))
 
-        if(self.get_direction() == False):
+        if not self.get_direction():
             self.inverse()
 
     def update_fall(self):
-        if(self.__index <=8):
+        if self.__index <= 8:
             self.__index = 9
-        elif(self.__index >= 10):
-            self.__index = 9 
+        elif self.__index >= 10:
+            self.__index = 9
         self.image = self.sprites[round(self.__index)]
         self.image = pygame.transform.scale(self.image, (80, 80))
-        if(self.get_direction() == False):
+        if not self.get_direction():
             self.inverse()
 
     def inverse(self):
@@ -159,36 +158,33 @@ class Kirby(pygame.sprite.Sprite):
     def get_direction(self):
         return self.__direction
 
-    def set_direction(self,boolean):
+    def set_direction(self, boolean):
         self.__direction = boolean
 
     def update_hited(self):
         self.__index = 11
         self.image = self.sprites[round(self.__index)]
         self.image = pygame.transform.scale(self.image, (80, 80))
-        if(self.get_direction() == False):
+        if not self.get_direction():
             self.inverse()
 
     def update_basic_atk(self):
-        if int(self.__index )== 19:
+        if int(self.__index) == 19:
             self.__index = 17
 
-        elif self.__index < 21 and self.__index >= 13 and self.__index < 17:
+        elif self.__index < 21 and 13 <= self.__index < 17:
             self.__index += 0.3
 
-
-        elif self.__index < 21 and self.__index >= 17:
+        elif 21 > self.__index >= 17:
             self.__index += 0.075
 
-
-        elif(self.__index <13):
+        elif self.__index < 13:
             self.__index = 13
 
         self.image = self.sprites[int(self.__index)]
-        self.image = pygame.transform.scale(self.image, (80, 80))          
-        if(self.get_direction() == False):
+        self.image = pygame.transform.scale(self.image, (80, 80))
+        if not self.get_direction():
             self.inverse()
-
 
     def set_index(self, index):
         self.__index = index
@@ -212,13 +208,15 @@ class Kirby(pygame.sprite.Sprite):
         if(self.get_direction() == False):
             self.inverse()
 
+
+
     def get_run(self):
         return self.__run
 
-    def set_run(self,status):
+    def set_run(self, status):
         self.__run = status
 
-    def set_jump(self,status):
+    def set_jump(self, status):
         self.__jumping = status
 
     def get_jump(self):
@@ -227,23 +225,23 @@ class Kirby(pygame.sprite.Sprite):
     def get_stopped(self):
         return self.__stopped
 
-    def set_stopped(self,status):
+    def set_stopped(self, status):
         self.__stopped = status
 
     def get_fall(self):
         return self.__fall
 
-    def set_fall(self,status):
+    def set_fall(self, status):
         self.__fall = status
 
     def get_moving(self):
         return self.__moving
 
-    def set_moving(self,status):
+    def set_moving(self, status):
         self.__moving = status
 
     def get_attack(self):
         return self.__attack
 
-    def set_attack(self,status):
+    def set_attack(self, status):
         self.__attack = status

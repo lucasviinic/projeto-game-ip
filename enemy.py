@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 
 
-class Inimigo(pygame.sprite.Sprite):
+class Enemy(pygame.sprite.Sprite):
     
     def __init__(self,tela,x,y,vida_inicial):
         pygame.sprite.Sprite.__init__(self)
@@ -52,7 +52,6 @@ class Inimigo(pygame.sprite.Sprite):
 
     def inverter(self):
         self.image = pygame.transform.flip(self.image, True, False)
-
 
     def get_pos(self):
         return self.rect
