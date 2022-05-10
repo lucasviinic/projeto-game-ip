@@ -493,7 +493,7 @@ def play(nickname: str):
         else:
             kirby.set_life(0)
             screen.blit(game_over, (280, 260))
-            screen.blit(restart, (330, 340))
+            screen.blit(restart, (240, 340))
             box_boxer.set_pos_x(600)
             box_boxer.set_pos_y(534.0000000000001)
             pygame.mixer.music.set_volume(0)
