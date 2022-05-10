@@ -1,6 +1,7 @@
 import time
 from sys import exit
 from services.manager import *
+from menu import main_menu
 
 import pygame
 from pygame.locals import *
@@ -46,7 +47,7 @@ def play(nickname: str):
     nick = nickname
 
     game_over = show_message('GAME OVER', 80, (0, 0, 255))
-    restart = show_message('Press T To Restart', 40, (0, 125, 125))
+    restart = show_message('Press T To Restart, or M To Menu', 40, (0, 125, 125))
     nick = show_message(f'{nick}', 30, (0, 0, 0))
 
     # KIRBY INFORMAÇÕES============================================================================================
@@ -292,6 +293,9 @@ def play(nickname: str):
                         coins_group.add(coin2)
                     if cherry not in cherrys_group:
                         cherrys_group.add(cherry)
+
+                if event.key == K_m and kirby.get_life() <= 0:
+                    main_menu(nome_jogador=nickname)
 
         if kirby.get_pos_x() < 0:
             kirby.set_pos_x(10)

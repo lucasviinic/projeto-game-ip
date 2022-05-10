@@ -1,7 +1,5 @@
 import pygame, sys
-
 from services.manager import *
-from main import play
 
 class Button():
 	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
@@ -44,10 +42,12 @@ BG = pygame.image.load("./assets/Background.png")
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("./assets/font.ttf", size)
 
-def main_menu():
+def main_menu(nome_jogador: str):
+
+    from main import play
 
     create_table()
-    nickname = ''
+    nickname = nome_jogador
 
     while True:
         SCREEN.blit(BG, (0, 0))
@@ -106,4 +106,4 @@ def main_menu():
         clock.tick(60)
 
 if __name__ == "__main__":
-    main_menu()
+    main_menu('')
