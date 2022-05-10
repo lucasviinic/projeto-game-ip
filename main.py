@@ -1,5 +1,6 @@
 import time
 from sys import exit
+from services.manager import *
 
 import pygame
 from pygame.locals import *
@@ -496,6 +497,10 @@ def play(nickname: str):
             moves = 0
             distance_coefficient = 1
             damage_coefficient = 1
+            
+            #Registra no banco de dados
+            print(f"{nickname} morreu :( e fez {score} pontos")
+            insert_player(nick=nickname, score=score)
 
         coin1.update()
         coin2.update()
