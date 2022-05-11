@@ -65,20 +65,38 @@ def main_menu(nome_jogador: str):
             while len(ranking_list) < 3:
                 ranking_list.append((int, "---", "---"))
 
-        FIRST_PLACE_TEXT = get_font(26).render(f"1. {ranking_list[0][1]}", True, "#b68f40")
-        FIRST_PLACE_RECT = FIRST_PLACE_TEXT.get_rect(center=(480, 550))
+        FIRST_PLACE_TEXT = get_font(26).render(f"{ranking_list[0][1]}", True, "#b68f40")
+        FIRST_PLACE_RECT = FIRST_PLACE_TEXT.get_rect(center=(470, 550))
 
-        SECOND_PLACE_TEXT = get_font(26).render(f"2. {ranking_list[1][1]}", True, "#b68f40")
-        SECOND_PLACE_RECT = SECOND_PLACE_TEXT.get_rect(center=(480, 600))
+        SECOND_PLACE_TEXT = get_font(26).render(f"{ranking_list[1][1]}", True, "#b68f40")
+        SECOND_PLACE_RECT = SECOND_PLACE_TEXT.get_rect(center=(470, 610))
 
-        THIRD_PLACE_TEXT = get_font(26).render(f"3. {ranking_list[2][1]}", True, "#b68f40")
-        THIRD_PLACE_RECT = THIRD_PLACE_TEXT.get_rect(center=(480, 650))
+        THIRD_PLACE_TEXT = get_font(26).render(f"{ranking_list[2][1]}", True, "#b68f40")
+        THIRD_PLACE_RECT = THIRD_PLACE_TEXT.get_rect(center=(470, 670))
 
         SCREEN.blit(LOGO, LOGO_RECT)
 
         SCREEN.blit(FIRST_PLACE_TEXT, FIRST_PLACE_RECT)
         SCREEN.blit(SECOND_PLACE_TEXT, SECOND_PLACE_RECT)
         SCREEN.blit(THIRD_PLACE_TEXT, THIRD_PLACE_RECT)
+
+        #Icone de trofeu de ouro
+        TROFEU_ICON_FIRST = pygame.image.load("./images/trofeu_ouro_test.png")
+        TROFEU_ICON_FIRST = pygame.transform.scale(TROFEU_ICON_FIRST, (48, 44))
+        TROFEU_ICON_FIRST_RECT = TROFEU_ICON_FIRST.get_rect(center=(350, 550))
+        SCREEN.blit(TROFEU_ICON_FIRST, TROFEU_ICON_FIRST_RECT)
+
+        #Icone de trofeu de prata
+        TROFEU_ICON_FIRST = pygame.image.load("./images/trofeu_prata_test.png")
+        TROFEU_ICON_FIRST = pygame.transform.scale(TROFEU_ICON_FIRST, (48, 44))
+        TROFEU_ICON_FIRST_RECT = TROFEU_ICON_FIRST.get_rect(center=(350, 610))
+        SCREEN.blit(TROFEU_ICON_FIRST, TROFEU_ICON_FIRST_RECT)
+
+        #Icone de trofeu de bronze
+        TROFEU_ICON_FIRST = pygame.image.load("./images/trofeu_bronze_test.png")
+        TROFEU_ICON_FIRST = pygame.transform.scale(TROFEU_ICON_FIRST, (48, 44))
+        TROFEU_ICON_FIRST_RECT = TROFEU_ICON_FIRST.get_rect(center=(350, 670))
+        SCREEN.blit(TROFEU_ICON_FIRST, TROFEU_ICON_FIRST_RECT)
 
         for button in [PLAY_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
