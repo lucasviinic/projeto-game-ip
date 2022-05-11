@@ -98,9 +98,19 @@ def main_menu(nome_jogador: str):
                     if len(nickname) < 10:
                         nickname += event.unicode
 
-        pygame.draw.rect(SCREEN, "white", (236, 250, 480, 73), 2)
-        text_surface = get_font(36).render(nickname, True, "black")
-        SCREEN.blit(text_surface, (255, 270))
+        #Text "Nickname:"
+        NICKNAME_TEXT = get_font(16).render("Nickname:", True, "#b68f40")
+        NICKNAME_RECT = NICKNAME_TEXT.get_rect(center=(310, 245))
+        SCREEN.blit(NICKNAME_TEXT, NICKNAME_RECT)
+
+        #Linha vertical
+        if len(nickname) == 0:
+            if pygame.time.get_ticks() % 1000 < 500:
+                pygame.draw.line(SCREEN, "white", (250, 320), (250, 280), 2)
+
+        pygame.draw.rect(SCREEN, "white", (236, 265, 480, 68), 2)
+        text_surface = get_font(30).render(nickname, True, "black")
+        SCREEN.blit(text_surface, (255, 285))
 
         pygame.display.flip()
         clock.tick(60)
