@@ -39,7 +39,7 @@ clock = pygame.time.Clock()
 
 BG = pygame.image.load("./images/background_menu.jpg")
 
-def get_font(size): # Returns Press-Start-2P in the desired size
+def get_font(size):
     return pygame.font.Font("./assets/font.ttf", size)
 
 def main_menu(nome_jogador: str):
@@ -98,12 +98,10 @@ def main_menu(nome_jogador: str):
                     if len(nickname) < 10:
                         nickname += event.unicode
 
-        #Text "Nickname:"
         NICKNAME_TEXT = get_font(16).render("Nickname:", True, "#b68f40")
         NICKNAME_RECT = NICKNAME_TEXT.get_rect(center=(310, 245))
         SCREEN.blit(NICKNAME_TEXT, NICKNAME_RECT)
 
-        #Linha vertical
         if len(nickname) == 0:
             if pygame.time.get_ticks() % 1000 < 500:
                 pygame.draw.line(SCREEN, "white", (250, 320), (250, 280), 2)
