@@ -503,7 +503,6 @@ def play(nickname: str):
             damage_coefficient = 1
             
             #Registra no banco de dados
-            print(f"{nickname} morreu :( e fez {score} pontos")
             insert_player(nick=nickname, score=score)
 
         coin1.update()
