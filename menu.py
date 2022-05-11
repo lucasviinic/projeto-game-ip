@@ -1,5 +1,6 @@
 import pygame, sys
 from services.manager import *
+import time
 
 class Button():
 	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
@@ -108,6 +109,8 @@ def main_menu(nome_jogador: str):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    pygame.mixer.Sound.play(pygame.mixer.Sound("./sounds/click_button_sound.mp3"))
+                    time.sleep(0.4)
                     play(nickname=nickname)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
