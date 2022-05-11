@@ -67,19 +67,15 @@ def main_menu(nome_jogador: str):
                 ranking_list.append((int, "---", "---"))
 
         FIRST_PLACE_TEXT = get_font(26).render(f"{ranking_list[0][1]}", True, "#b68f40")
-        FIRST_PLACE_RECT = FIRST_PLACE_TEXT.get_rect(center=(470, 550))
+        SCREEN.blit(FIRST_PLACE_TEXT, (400, 536))
 
         SECOND_PLACE_TEXT = get_font(26).render(f"{ranking_list[1][1]}", True, "#b68f40")
-        SECOND_PLACE_RECT = SECOND_PLACE_TEXT.get_rect(center=(470, 610))
+        SCREEN.blit(SECOND_PLACE_TEXT, (400, 596))
 
         THIRD_PLACE_TEXT = get_font(26).render(f"{ranking_list[2][1]}", True, "#b68f40")
-        THIRD_PLACE_RECT = THIRD_PLACE_TEXT.get_rect(center=(470, 670))
+        SCREEN.blit(THIRD_PLACE_TEXT, (400, 656))
 
         SCREEN.blit(LOGO, LOGO_RECT)
-
-        SCREEN.blit(FIRST_PLACE_TEXT, FIRST_PLACE_RECT)
-        SCREEN.blit(SECOND_PLACE_TEXT, SECOND_PLACE_RECT)
-        SCREEN.blit(THIRD_PLACE_TEXT, THIRD_PLACE_RECT)
 
         #Icone de trofeu de ouro
         TROFEU_ICON_FIRST = pygame.image.load("./images/trofeu_ouro_test.png")
@@ -119,9 +115,9 @@ def main_menu(nome_jogador: str):
                     if len(nickname) < 10:
                         nickname += event.unicode
 
-        NICKNAME_TEXT = get_font(16).render("Nickname:", True, "#b68f40")
-        NICKNAME_RECT = NICKNAME_TEXT.get_rect(center=(310, 245))
-        SCREEN.blit(NICKNAME_TEXT, NICKNAME_RECT)
+        NICKNAME_TITLE = get_font(16).render("Nickname:", True, "#b68f40")
+        NICKNAME_RECT = NICKNAME_TITLE.get_rect(center=(310, 245))
+        SCREEN.blit(NICKNAME_TITLE, NICKNAME_RECT)
 
         if len(nickname) == 0:
             if pygame.time.get_ticks() % 1000 < 500:
